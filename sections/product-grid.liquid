@@ -1,0 +1,45 @@
+{% assign grid_collection = collections.all %}
+{% if section.settings.collection != blank %}
+  {% assign grid_collection = section.settings.collection %}
+{% endif %}
+
+<section class="section container">
+  <div class="intro">
+    <h2 class="display display--lg">{{ section.settings.heading }}</h2>
+    <div>
+      <p class="intro__text">{{ section.settings.text }}</p>
+      <a class="btn btn--light" href="{{ grid_collection.url }}">View all</a>
+    </div>
+  </div>
+
+  <ul class="tiles tiles--4 product-grid">
+    {% for product in grid_collection.products limit: 4 %}
+      <li>
+        <a class="tile" href="{{ product.url }}">
+          <div class="media tile__media tile__media--product">
+            {% render 'product-media', product: product, width: 800 %}
+          </div>
+          <div class="tile__body">
+            <h3 class="tile__title">{{ product.title }}</h3>
+            <p class="tile__text">{{ product.price | money }}</p>
+          </div>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% stylesheet %}
+  .product-grid { margin: 0; padding: 0; list-style: none; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product grid",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The range" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "A backpack and the small things that live inside it." },
+    { "type": "collection", "id": "collection", "label": "Collection" }
+  ]
+}
+{% endschema %}

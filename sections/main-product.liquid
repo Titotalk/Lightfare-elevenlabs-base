@@ -1,0 +1,90 @@
+{% assign current_variant = product.selected_or_first_available_variant %}
+
+<section class="section container product">
+  <div class="product__media">
+    <div class="media product__photo">
+      {% render 'product-media', product: product, width: 1400 %}
+    </div>
+  </div>
+
+  <div class="product__info">
+    {% if product.type != blank %}
+      <p class="product__type muted">{{ product.type }}</p>
+    {% endif %}
+    <h1 class="display display--lg product__title">{{ product.title }}</h1>
+    <p class="product__price">
+      {{ current_variant.price | money }}
+      {% if current_variant.compare_at_price > current_variant.price %}
+        <s class="muted">{{ current_variant.compare_at_price | money }}</s>
+      {% endif %}
+    </p>
+
+    {% form 'product', product %}
+      {% if product.has_only_default_variant %}
+        <input type="hidden" name="id" value="{{ current_variant.id }}">
+      {% else %}
+        <select class="product__select" name="id" aria-label="Option">
+          {% for variant in product.variants %}
+            <option value="{{ variant.id }}"
+              {% if variant == current_variant %}selected{% endif %}
+              {% unless variant.available %}disabled{% endunless %}>
+              {{ variant.title }}{% unless variant.available %} (sold out){% endunless %}
+            </option>
+          {% endfor %}
+        </select>
+      {% endif %}
+      <button class="btn btn--dark product__add" type="submit" name="add"
+        {% unless current_variant.available %}disabled{% endunless %}>
+        {% if current_variant.available %}Add to bag{% else %}Sold out{% endif %}
+      </button>
+    {% endform %}
+
+    {% if product.description != blank %}
+      <div class="product__description muted">{{ product.description }}</div>
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .product {
+    display: grid;
+    gap: var(--gap);
+    padding-top: 96px;
+  }
+  @media (min-width: 1024px) {
+    .product { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); align-items: start; }
+    .product__info { position: sticky; top: 88px; }
+  }
+  .product__photo { aspect-ratio: 1 / 1; border-radius: var(--radius); }
+  .product__info {
+    padding: 32px;
+    border-radius: var(--radius);
+    background: var(--block);
+  }
+  .product__type { margin: 0 0 8px; font-size: 14px; }
+  .product__title { margin-bottom: 12px; }
+  .product__price { margin: 0 0 32px; font-size: 16px; }
+  .product__price s { margin-left: 8px; }
+  .product__select {
+    width: 100%;
+    height: 44px;
+    margin-bottom: 8px;
+    padding: 0 16px;
+    font: inherit;
+    font-size: 15px;
+    color: inherit;
+    border: 0;
+    border-radius: 9999px;
+    background: var(--card);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .product__add { width: 100%; }
+  .product__description { margin-top: 32px; font-size: 15px; line-height: 1.6; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,161 @@
+/* ==========================================================================
+   base.css - shared look for the whole theme.
+   Change a colour, font or spacing here and every section follows.
+   ========================================================================== */
+:root {
+  /* Colours */
+  --page: #FDFCFC;          /* page background, near-white */
+  --ink: #000000;           /* main text and dark buttons */
+  --muted: #6B6B6B;         /* secondary text */
+  --block: #F5F3F1;         /* the soft grey blocks that break the page up */
+  --card: #FFFFFF;          /* white cards and light buttons */
+  --line: rgba(0, 0, 0, 0.08);
+
+  /* Shapes */
+  --radius: 16px;
+  --radius-sm: 12px;
+
+  /* Width and spacing: a centred column, never wider than 1306px */
+  --container: 81.625rem;
+  --gutter: 20px;           /* space at the left and right of the page */
+  --gap: 12px;              /* space between blocks */
+  --section-pt: 120px;      /* space above each section */
+  --section-pb: 40px;
+
+  /* Fonts */
+  --font-display: "Inter Tight", "Inter", system-ui, sans-serif;
+  --font-ui: "Inter", system-ui, sans-serif;
+}
+@media (min-width: 640px) {
+  :root { --gutter: 40px; --gap: 16px; }
+}
+@media (min-width: 1280px) {
+  :root { --gutter: 64px; }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--page); }
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+/* Two faint vertical lines down the edges of the centre column */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  z-index: -1;
+  width: calc(min(100vw, var(--container)) - 2 * var(--gutter));
+  transform: translateX(-50%);
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  pointer-events: none;
+}
+a { color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* The centre column. Every section sits inside one. */
+.container {
+  width: calc(min(100%, var(--container)) - 2 * var(--gutter));
+  margin-inline: auto;
+}
+.section {
+  padding-top: var(--section-pt);
+  padding-bottom: var(--section-pb);
+}
+
+/* Headings */
+.display {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+.display--xl { font-size: clamp(40px, 4.6vw, 64px); }
+.display--lg { font-size: clamp(28px, 2.8vw, 36px); line-height: 1.17; }
+.muted { color: var(--muted); }
+
+/* Pill buttons */
+.btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 9999px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.btn--sm { height: 36px; padding: 0 14px; font-size: 14px; }
+.btn--dark { background: var(--ink); color: #FFFFFF; }
+.btn--dark:hover { background: #333333; }
+.btn--light { background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.btn--light:hover { background: var(--block); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Section intro: heading on the left, text and button on the right */
+.intro {
+  display: grid;
+  gap: 20px;
+  margin-bottom: 48px;
+}
+@media (min-width: 1024px) {
+  .intro { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+}
+.intro__text { margin: 0 0 24px; max-width: 28rem; }
+.intro--center { grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; }
+.intro--center .intro__text { margin-inline: auto; }
+
+/* Photo or placeholder */
+.media { position: relative; overflow: hidden; background: var(--block); }
+.media__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.media__ph {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 30% 20%, #FFFFFF 0%, var(--block) 65%);
+}
+
+/* Tiles: the rounded grey blocks */
+.tiles { display: grid; gap: var(--gap); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 750px) {
+  .tiles--2, .tiles--3, .tiles--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .tiles--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tiles--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.tile {
+  display: block;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  background: var(--block);
+  border-radius: var(--radius);
+}
+.tile__media { aspect-ratio: 4 / 3; }
+.tile__media--product { aspect-ratio: 1 / 1; }
+.tile__body { padding: 20px; }
+.tile__title { margin: 0; font-size: 15px; font-weight: 500; }
+.tile__text { margin: 4px 0 0; font-size: 15px; color: var(--muted); }
+@media (hover: hover) {
+  .tile:hover .media__img { transform: scale(1.03); }
+}

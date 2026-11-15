@@ -1,0 +1,63 @@
+<section class="section container">
+  <div class="intro">
+    <h2 class="display display--lg">{{ section.settings.heading | newline_to_br }}</h2>
+    <div>
+      <p class="intro__text">{{ section.settings.text }}</p>
+      {% if section.settings.button_label != blank %}
+        <a class="btn btn--dark" href="{{ section.settings.button_link | default: routes.all_products_url }}">{{ section.settings.button_label }}</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="tiles tiles--{{ section.settings.columns }}">
+    {% for block in section.blocks %}
+      <div class="tile" {{ block.shopify_attributes }}>
+        <div class="media tile__media">
+          {% if block.settings.image %}
+            {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'media__img' }}
+          {% else %}
+            <div class="media__ph" aria-hidden="true"></div>
+          {% endif %}
+        </div>
+        <div class="tile__body">
+          <h3 class="tile__title">{{ block.settings.title }}</h3>
+          <p class="tile__text">{{ block.settings.text }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Feature tiles",
+  "settings": [
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Everything you need,\nnothing you check" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "One bag sized for the space under the seat in front of you, laid out so you can find things without unpacking." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "See the details" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" }
+      ],
+      "default": "3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Tile title" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "A short line about this feature." }
+      ]
+    }
+  ],
+  "max_blocks": 6
+}
+{% endschema %}

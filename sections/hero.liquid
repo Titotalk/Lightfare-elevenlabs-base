@@ -1,0 +1,113 @@
+{% assign stage_collection = collections.all %}
+{% if section.settings.collection != blank %}
+  {% assign stage_collection = section.settings.collection %}
+{% endif %}
+
+<section class="hero container">
+  <div class="hero__top">
+    <div>
+      <h1 class="display display--xl hero__title">{{ section.settings.heading | newline_to_br }}</h1>
+      <div class="btns">
+        {% if section.settings.button_label != blank %}
+          <a class="btn btn--dark" href="{{ section.settings.button_link | default: routes.all_products_url }}">{{ section.settings.button_label }}</a>
+        {% endif %}
+        {% if section.settings.button2_label != blank %}
+          <a class="btn btn--light" href="{{ section.settings.button2_link | default: '#' }}">{{ section.settings.button2_label }}</a>
+        {% endif %}
+      </div>
+    </div>
+    <p class="hero__text">{{ section.settings.text }}</p>
+  </div>
+
+  {% if section.settings.show_stage %}
+    <div class="hero__stage">
+      {% for product in stage_collection.products limit: 3 %}
+        <a class="hero__slot" href="{{ product.url }}">
+          <span class="hero__label">{{ product.title }}</span>
+          <div class="media hero__media">
+            {% render 'product-media', product: product, width: 900 %}
+          </div>
+          <span class="hero__price">{{ product.price | money }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+
+{% stylesheet %}
+  .hero { padding-top: 96px; }
+  .hero__top {
+    display: grid;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  @media (min-width: 1024px) {
+    .hero__top { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+  }
+  .hero__title { margin-bottom: 24px; }
+  .hero__text { margin: 0; max-width: 28rem; }
+
+  /* The big grey block holding three products */
+  .hero__stage {
+    display: grid;
+    gap: 8px;
+    padding: 8px;
+    border-radius: var(--radius);
+    background: var(--block);
+  }
+  @media (min-width: 750px) {
+    .hero__stage { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  .hero__slot {
+    display: grid;
+    gap: 8px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .hero__label {
+    justify-self: stretch;
+    overflow: hidden;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+  }
+  .hero__slot:hover .hero__label,
+  .hero__slot:first-child .hero__label {
+    background: var(--card);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+  .hero__media {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-sm);
+  }
+  .hero__price {
+    padding: 4px 14px 8px;
+    font-size: 14px;
+    color: var(--muted);
+    text-align: center;
+  }
+  @media (hover: hover) {
+    .hero__slot:hover .media__img { transform: scale(1.03); }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Travel light,\npack less" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "A small line of bags for people who would rather not check one. Fits under the seat, opens flat, ships free." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop the backpack" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "button2_label", "label": "Second button label", "default": "How it packs" },
+    { "type": "url", "id": "button2_link", "label": "Second button link" },
+    { "type": "checkbox", "id": "show_stage", "label": "Show product block", "default": true },
+    { "type": "collection", "id": "collection", "label": "Product block collection" }
+  ]
+}
+{% endschema %}

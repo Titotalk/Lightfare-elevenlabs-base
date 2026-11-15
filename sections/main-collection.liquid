@@ -1,0 +1,60 @@
+<section class="section container collection">
+  <div class="intro">
+    <h1 class="display display--xl">{{ collection.title }}</h1>
+    {% if section.settings.show_count %}
+      <p class="intro__text muted collection__count">{{ collection.products_count }} products</p>
+    {% endif %}
+  </div>
+
+  {% paginate collection.products by 12 %}
+    {% if collection.products.size == 0 %}
+      <p class="muted">No products found.</p>
+    {% else %}
+      <ul class="tiles tiles--3 collection__list">
+        {% for product in collection.products %}
+          <li>
+            <a class="tile" href="{{ product.url }}">
+              <div class="media tile__media tile__media--product">
+                {% render 'product-media', product: product, width: 900 %}
+              </div>
+              <div class="tile__body collection__body">
+                <h2 class="tile__title">{{ product.title }}</h2>
+                <p class="tile__text">{{ product.price | money }}</p>
+              </div>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if paginate.pages > 1 %}
+      <nav class="btns collection__pages" aria-label="Pagination">
+        {% if paginate.previous %}
+          <a class="btn btn--sm btn--light" href="{{ paginate.previous.url }}">Previous</a>
+        {% endif %}
+        <span class="muted">Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+        {% if paginate.next %}
+          <a class="btn btn--sm btn--light" href="{{ paginate.next.url }}">Next</a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  {% endpaginate %}
+</section>
+
+{% stylesheet %}
+  .collection { padding-top: 96px; }
+  .collection__count { align-self: end; }
+  .collection__list { margin: 0; padding: 0; list-style: none; }
+  .collection__body { display: flex; justify-content: space-between; gap: 16px; }
+  .collection__body .tile__text { margin: 0; flex: none; }
+  .collection__pages { justify-content: center; align-items: center; gap: 16px; margin-top: 64px; font-size: 14px; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    { "type": "checkbox", "id": "show_count", "label": "Show product count", "default": true }
+  ]
+}
+{% endschema %}

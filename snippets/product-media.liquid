@@ -1,0 +1,10 @@
+{%- comment -%}
+  Shows a product photo, or a plain placeholder while
+  "Show product photos" is off in Theme settings.
+  Use: {% render 'product-media', product: product, width: 800 %}
+{%- endcomment -%}
+{%- if settings.show_product_photos and product.featured_image -%}
+  {{ product.featured_image | image_url: width: width | image_tag: loading: 'lazy', class: 'media__img' }}
+{%- else -%}
+  <div class="media__ph" aria-hidden="true"></div>
+{%- endif -%}

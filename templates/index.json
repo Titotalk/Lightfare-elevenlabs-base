@@ -1,0 +1,38 @@
+{
+  "sections": {
+    "hero": { "type": "hero", "settings": {} },
+    "values": {
+      "type": "value-strip",
+      "settings": {},
+      "blocks": {
+        "v1": { "type": "value", "settings": { "text": "Free shipping" } },
+        "v2": { "type": "value", "settings": { "text": "Fits under the seat" } },
+        "v3": { "type": "value", "settings": { "text": "Opens flat" } },
+        "v4": { "type": "value", "settings": { "text": "Ships in 7–15 days" } }
+      },
+      "block_order": ["v1", "v2", "v3", "v4"]
+    },
+    "features": {
+      "type": "feature-tiles",
+      "settings": {},
+      "blocks": {
+        "t1": { "type": "tile", "settings": { "title": "Under-seat size", "text": "Sized for the space under the seat in front of you." } },
+        "t2": { "type": "tile", "settings": { "title": "Opens like a suitcase", "text": "The main compartment unzips flat, so packing is one layer at a time." } },
+        "t3": { "type": "tile", "settings": { "title": "Somewhere for everything", "text": "Pockets for a passport, cables and a laptop, each in its own place." } }
+      },
+      "block_order": ["t1", "t2", "t3"]
+    },
+    "products": { "type": "product-grid", "settings": {} },
+    "statement": {
+      "type": "statement",
+      "settings": {},
+      "blocks": {
+        "s1": { "type": "stat", "settings": { "number": "20 L", "label": "Capacity" } },
+        "s2": { "type": "stat", "settings": { "number": "1 bag", "label": "No checked luggage" } },
+        "s3": { "type": "stat", "settings": { "number": "$0", "label": "Shipping" } }
+      },
+      "block_order": ["s1", "s2", "s3"]
+    }
+  },
+  "order": ["hero", "values", "features", "products", "statement"]
+}

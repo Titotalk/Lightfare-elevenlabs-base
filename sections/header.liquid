@@ -1,0 +1,62 @@
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="site-header__wordmark" href="{{ routes.root_url }}">{{ shop.name }}</a>
+
+    <nav class="site-header__nav" aria-label="Main">
+      <a href="{{ routes.all_products_url }}">Shop</a>
+      <a href="#">Travel</a>
+      <a href="#">About</a>
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="btn btn--sm btn--light" href="{{ routes.account_url }}">Account</a>
+      <a class="btn btn--sm btn--dark" href="{{ routes.cart_url }}">Bag ({{ cart.item_count }})</a>
+    </div>
+  </div>
+</header>
+
+{% stylesheet %}
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(253, 252, 252, 0.85);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    height: 64px;
+  }
+  .site-header__wordmark {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .site-header__nav {
+    display: none;
+    gap: 24px;
+    font-size: 14px;
+  }
+  .site-header__nav a { text-decoration: none; }
+  .site-header__nav a:hover { color: var(--muted); }
+  .site-header__actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+  }
+  @media (min-width: 750px) {
+    .site-header__nav { display: flex; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": []
+}
+{% endschema %}
